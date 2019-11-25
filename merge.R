@@ -11,4 +11,4 @@ multmerge = function(mypath) {
 
 # Open an R console and run:
 trait_matrix <- multmerge("csv_result_files") # Path where CSV files are stored
-write.csv(trait_matrix, file = "cyperaceae_trait_matrix.csv", na = "")
+write.csv(trait_matrix, file = "trait_matrix.csv", na = "")
