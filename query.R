@@ -38,6 +38,16 @@ query_property_texts <- function(query_results, property) {
 }
 
 
+properties_texts_to_data_frame <- function(properties_texts, properties) {
+  # Input: a list of property results with associated Taxon names
+  # Output: a left-joined data frame housing all property text/Taxon name combinations
+  properties_texts_list <- properties_texts %>% map(~ data.frame(., names(.))) # Build data frames
+  properties_texts_list <- lapply(seq_along(properties_texts_list), function(i) setNames(properties_texts_list[[i]], c(properties[i], "Taxon name"))) # Fix up column names
+  properties_texts_data_frame <- properties_texts_list %>% reduce(left_join, by = "Taxon name") # Left join of data frames by Taxon name
+  return (properties_texts_data_frame)
+}
+
+
 ask_query_titles <- function(query_string, output_file_name) {
   # Run a query and save page title results in a csv
   # e.g., query_string = "[[Authority::Linnaeus]][[Distribution::Nunavut]]"
@@ -59,9 +69,7 @@ ask_query_titles_properties <- function(query_string, output_file_name) {
   query_results <- query(url, out_class = "none")
   properties <- strsplit(query_string, "\\|\\?") %>% map(~ .[2:length(.)]) %>% unlist
   properties_texts <- properties %>% map(~ query_property_texts(query_results, property = .))
-  properties_texts_list <- properties_texts %>% map(~ data.frame(., names(.))) # Build data frames
-  properties_texts_list <- lapply(seq_along(properties_texts_list), function(i) setNames(properties_texts_list[[i]], c(properties[i], "Taxon name"))) # Fix up column names
-  properties_texts_data_frame <- properties_texts_list %>% reduce(left_join, by = "Taxon name") # Left join of data frames by Taxon name
+  properties_texts_data_frame <- properties_texts_to_data_frame(properties_texts, properties)
   write.csv(properties_texts_data_frame, output_file_name)
   return (properties_texts_data_frame)
 }
