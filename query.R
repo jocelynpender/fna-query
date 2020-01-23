@@ -10,8 +10,8 @@ ask_query_url <- function(query_string) {
 }
 
 query_page_titles <- function(query_results) {
-  # Take query results returned by the WikipediR query function
-  # and transform them into a list of page title results
+  # Input: query results returned by the WikipediR query function
+  # Output: a list of page title results
   page_titles <- query_results$query$results %>% map(~ .$fulltext)
   page_titles_list <- page_titles %>% unlist
   names(page_titles_list) <- FALSE  # Strip off list names
@@ -20,11 +20,12 @@ query_page_titles <- function(query_results) {
 
 
 query_property_texts <- function(query_results, property) {
+  # Input: query results returned by the WikipediR query function
+  # Output: a named vector with property text as vlues and Taxon name as vector names
   printouts <- query_results$query$results %>% map(~ .$printouts) # the API query returns "printouts" of the requested property texts
   unlisted_printouts <- printouts %>% unlist
   property_text_labels <- names(printouts) %>% paste(., property, sep=".") # paste the Taxon name returned with the property name to get the label for selecting the property text returned by the query
   property_text <- unlisted_printouts[property_text_labels] # select the property texts using "Taxon name.Property name"
-  
   grepped_property_text_labels = property_text_labels %>% map(~ names(unlisted_printouts)[grepl(., names(unlisted_printouts))]) %>% unlist
   if (length(grepped_property_text_labels) > length(property_text)) { # If the above returns no hits, the property text may be stored as "fulltext"
     property_text_labels_full_text <- paste(property_text_labels, "fulltext", sep=".")
@@ -48,15 +49,19 @@ ask_query_titles <- function(query_string, output_file_name) {
 
 
 ask_query_titles_properties <- function(query_string, output_file_name) {
+  # Input: a query string to run ask SMW ask query API
+  # Examples:
   # query_string = "[[Authority::Miller]]|?Taxon family|?Volume"
   # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Illustration|?Distribution"
   # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Distribution"
+  # Output: a csv and a data frame holding Taxon names returned and the property values asked for
   url <- ask_query_url(query_string)
   query_results <- query(url, out_class = "none")
   properties <- strsplit(query_string, "\\|\\?") %>% map(~ .[2:length(.)]) %>% unlist
   properties_texts <- properties %>% map(~ query_property_texts(query_results, property = .))
-  properties_texts_list <- properties_texts %>% map(~ data.frame(., names(.)))
+  properties_texts_list <- properties_texts %>% map(~ data.frame(., names(.))) # Build data frames
   properties_texts_list <- lapply(seq_along(properties_texts_list), function(i) setNames(properties_texts_list[[i]], c(properties[i], "Taxon name"))) # Fix up column names
-  properties_texts_data_frame <- properties_texts_list %>% reduce(left_join, by = "Taxon name")
+  properties_texts_data_frame <- properties_texts_list %>% reduce(left_join, by = "Taxon name") # Left join of data frames by Taxon name
   write.csv(properties_texts_data_frame, output_file_name)
+  return (properties_texts_data_frame)
 }
