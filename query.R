@@ -19,16 +19,20 @@ query_page_titles <- function(query_results) {
 }
 
 
-query_property_text <- function(query_results, property) {
+query_property_texts <- function(query_results, property) {
   printouts <- query_results$query$results %>% map(~ .$printouts) # the API query returns "printouts" of the requested property texts
   unlisted_printouts <- printouts %>% unlist
   property_text_labels <- names(printouts) %>% paste(., property, sep=".") # paste the Taxon name returned with the property name to get the label for selecting the property text returned by the query
   property_text <- unlisted_printouts[property_text_labels] # select the property texts using "Taxon name.Property name"
-  if (is.na(property_text) %>% sum(.) == length(property_text)) { # If the above returns no hits, the property text may be stored as "fulltext"
+  
+  grepped_property_text_labels = property_text_labels %>% map(~ names(unlisted_printouts)[grepl(., names(unlisted_printouts))]) %>% unlist
+  if (length(grepped_property_text_labels) > length(property_text)) { # If the above returns no hits, the property text may be stored as "fulltext"
     property_text_labels_full_text <- paste(property_text_labels, "fulltext", sep=".")
     property_text <- unlisted_printouts[property_text_labels_full_text]
-  }
-  names(property_text) <- names(property_text) %>% gsub(paste(".", property, ".fulltext", sep=""), "", .) # Clean up property text labels
+    if (any(grepl('\\d$', grepped_property_text_labels))) { # if properties are numbered
+      property_text <- unlisted_printouts[grepped_property_text_labels] }
+    }
+  names(property_text) <- names(property_text) %>% gsub(property, "", .) %>% gsub("fulltext", "", .) %>% gsub("\\d", "", .) %>% gsub("\\.", "", .) # Clean up property text labels
   return(property_text)
 }
 
@@ -45,12 +49,14 @@ ask_query_titles <- function(query_string, output_file_name) {
 
 ask_query_titles_properties <- function(query_string, output_file_name) {
   # query_string = "[[Authority::Miller]]|?Taxon family|?Volume"
-  query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Illustration"
-  # "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Distribution"
+  # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Illustration|?Distribution"
+  # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Distribution"
   url <- ask_query_url(query_string)
   query_results <- query(url, out_class = "none")
   properties <- strsplit(query_string, "\\|\\?") %>% map(~ .[2:length(.)]) %>% unlist
-  properties_texts <- properties %>% map(~ query_property_text(query_results, property = .))
-  properties_texts_data_frame <- do.call(rbind, properties_texts) %>% t
+  properties_texts <- properties %>% map(~ query_property_texts(query_results, property = .))
+  properties_texts_list <- properties_texts %>% map(~ data.frame(., names(.)))
+  properties_texts_list <- lapply(seq_along(properties_texts_list), function(i) setNames(properties_texts_list[[i]], c(properties[i], "Taxon name"))) # Fix up column names
+  properties_texts_data_frame <- properties_texts_list %>% reduce(left_join, by = "Taxon name")
   write.csv(properties_texts_data_frame, output_file_name)
 }
