@@ -9,6 +9,13 @@ ask_query_url <- function(query_string) {
   return(url)
 }
 
+run_query <- function(query_string) {
+  # Run a query against the Semantic MediaWiki http api URL and obtain results back in R
+  url <- ask_query_url(query_string)
+  query_results <- query(url, out_class = "none")
+  return(query_results)
+}
+
 query_page_titles <- function(query_results) {
   # Input: query results returned by the WikipediR query function
   # Output: a list of page title results
@@ -50,8 +57,7 @@ properties_texts_to_data_frame <- function(properties_texts, properties) {
 ask_query_titles <- function(query_string, output_file_name) {
   # Run a query and save page title results in a csv
   # e.g., query_string = "[[Authority::Linnaeus]][[Distribution::Nunavut]]"
-  url <- ask_query_url(query_string)
-  query_results <- query(url, out_class = "none")
+  query_results <- run_query(query_string)
   page_titles_vector <- query_page_titles(query_results)
   write.csv(page_titles_vector, output_file_name)
   return (page_titles_vector)
@@ -65,8 +71,7 @@ ask_query_titles_properties <- function(query_string, output_file_name) {
   # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Illustration|?Distribution"
   # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Distribution"
   # Output: a csv and a data frame holding Taxon names returned and the property values asked for
-  url <- ask_query_url(query_string)
-  query_results <- query(url, out_class = "none")
+  query_results <- run_query(query_string)
   properties <- strsplit(query_string, "\\|\\?") %>% map(~ .[2:length(.)]) %>% unlist
   properties_texts <- properties %>% map(~ query_property_texts(query_results, property = .))
   properties_texts_data_frame <- properties_texts_to_data_frame(properties_texts, properties)
