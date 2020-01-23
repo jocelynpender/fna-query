@@ -12,10 +12,9 @@ ask_query_url <- function(query_string) {
 query_page_titles <- function(query_results) {
   # Input: query results returned by the WikipediR query function
   # Output: a list of page title results
-  page_titles <- query_results$query$results %>% map(~ .$fulltext)
-  page_titles_list <- page_titles %>% unlist
-  names(page_titles_list) <- FALSE  # Strip off list names
-  return(page_titles_list)
+  page_titles <- query_results$query$results %>% map(~ .$fulltext) %>% unlist
+  page_titles_vector <- as.vector(page_titles)
+  return(page_titles_vector)
 }
 
 
@@ -53,8 +52,9 @@ ask_query_titles <- function(query_string, output_file_name) {
   # e.g., query_string = "[[Authority::Linnaeus]][[Distribution::Nunavut]]"
   url <- ask_query_url(query_string)
   query_results <- query(url, out_class = "none")
-  page_titles_list <- query_page_titles(query_results)
-  write.csv(page_titles_list, output_file_name)
+  page_titles_vector <- query_page_titles(query_results)
+  write.csv(page_titles_vector, output_file_name)
+  return (page_titles_vector)
 }
 
 
