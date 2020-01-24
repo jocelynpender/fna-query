@@ -1,7 +1,7 @@
 from mwclient import Site
 import pandas as pd
 import re
-import local  # create a file called local.py with your credentials
+import src.local  # create a file called local.py with your credentials
 
 
 def site_login():
@@ -10,7 +10,7 @@ def site_login():
     Create a file called local.py with your credentials
     """
     site = Site(('http', 'beta.floranorthamerica.org'))
-    site.login(local.USERNAME, local.PASSWORD)  # create a file called local.py with your credentials
+    site.login(src.local.USERNAME, src.local.PASSWORD)  # create a file called local.py with your credentials
     return site
 
 
@@ -80,5 +80,5 @@ def ask_query(query_string, output_file_name):
     properties_texts = [extract_taxon_properties(item, properties) for item in data]
     properties.insert(0, 'Taxon name')  # Convert the list to appropriate column names
     properties_texts_data_frame = pd.DataFrame(properties_texts, columns=properties)
-    properties_texts_data_frame.to_csv(output_file_name, header=False, index=False)
+    properties_texts_data_frame.to_csv(output_file_name, index=False)
     return properties_texts_data_frame
