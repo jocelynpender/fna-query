@@ -1,3 +1,5 @@
+# Run this file in your terminal like this: python -m src.run_query --output_file_name "file_name.csv" --query_string "[[Query::here]]"
+
 import argparse
 from src.query import *
 
