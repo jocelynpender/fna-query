@@ -27,10 +27,9 @@ query_page_titles <- function(query_results) {
 }
 
 
-query_property_texts <- function(query_results, property) {
+query_property_texts <- function(printouts, property) {
   # Input: query results returned by the WikipediR query function 
   # Output: a named vector with property text as vlues and Taxon name as vector names
-  printouts <- query_results$query$results %>% map(~.$printouts)  # the API query returns 'printouts' of the requested property texts
   unlisted_printouts <- printouts %>% unlist
   property_text_labels <- names(printouts) %>% paste(., property, sep = ".")  # paste the Taxon name returned with the property name to get the label for selecting the property text returned by the query
   property_text <- unlisted_printouts[property_text_labels]  # select the property texts using 'Taxon name.Property name'
@@ -85,7 +84,8 @@ ask_query_titles_properties <- function(query_string, output_file_name) {
   # names returned and the property values asked for
   query_results <- run_query(query_string)
   properties <- strsplit(query_string, "\\|\\?") %>% map(~.[2:length(.)]) %>% unlist
-  properties_texts <- properties %>% map(~query_property_texts(query_results, property = .))
+  printouts <- query_results$query$results %>% map(~.$printouts)  # the API query returns 'printouts' of the requested property texts
+  properties_texts <- properties %>% map(~query_property_texts(printouts, property = .))
   properties_texts_data_frame <- properties_texts_to_data_frame(properties_texts, 
     properties)
   write.csv(properties_texts_data_frame, output_file_name)
