@@ -14,28 +14,6 @@ def site_login():
     return site
 
 
-def ask_query_titles(query_string, output_file_name):
-    """
-    Run a query and save page title results in a csv
-
-    Parameters
-    ----------
-    query_string:
-    e.g., query_string = "[[Authority::Linnaeus]][[Distribution::Nunavut]]"
-
-    output_file_name
-
-    Returns
-    -------
-
-    """
-    site = site_login()
-    page_titles = [answer["fulltext"] for answer in site.ask(query_string)]  # fulltext key is the page title
-    page_titles_data_frame = pd.DataFrame(page_titles)
-    page_titles_data_frame.to_csv(output_file_name, header=False, index=False)
-    return page_titles_data_frame
-
-
 def extract_property_text(printouts, property):
     """
 
@@ -77,7 +55,7 @@ def extract_taxon_properties(item, properties):
     return property_texts
 
 
-def ask_query_titles_properties(query_string, output_file_name):
+def ask_query(query_string, output_file_name):
     """
 
     Parameters
