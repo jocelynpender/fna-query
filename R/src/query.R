@@ -1,5 +1,5 @@
 require("WikipediR")
-require(tidyverse)
+require("tidyverse")
 
 
 ask_query_url <- function(query_string) {
