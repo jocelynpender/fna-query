@@ -140,7 +140,7 @@ Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 </details>
 
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100" align="middle">
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100" class="center">
 
 ## Use Python
 
