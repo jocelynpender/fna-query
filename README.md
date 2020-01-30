@@ -2,11 +2,35 @@
 
 These scripts leverage the `http://beta.semanticfna.org/` API.
 
+  * [Getting started](#getting-started)
+    + [Prepare your query](#prepare-your-query)
+    + [Use R](#use-r)
+    + [Use Python](#use-python)
+  * [Getting help](#getting-help)
+    + [Bug reports](#bug-reports)
+  * [Resources](#resources)
+    + [Dependency documentation](#dependency-documentation)
+    + [Merging Multiple CSV Files](#merging-multiple-csv-files)
+
 ## Getting started
 
 You can use R or Python to programmatically query the Flora of North America. 
 
-### R
+### Prepare your query
+
+The Flora of North America Semantic MediaWiki can be queried using the Semantic MediaWiki semantic search syntax.
+
+In brief, you must have a **condition**: 
+`[[Authority::Linnaeus]]`
+
+You can optionally return **properties** of the taxa matching your condition:
+`?Distribution`
+
+Read more about Semantic MediaWiki query syntax:
+* https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
+* https://www.semantic-mediawiki.org/wiki/Help:Search_operators
+
+### Use R
 
 This section assumes you are familiar with the R programming language. 
 
@@ -17,28 +41,35 @@ This section assumes you are familiar with the R programming language.
 * tidyverse
 
 There are two options for getting ready:
-##### 1. Manual install
+##### 1. Manual install of R packages
 
 Open a terminal.
-`git clone https://github.com/jocelynpender/fna-query.git`
+Type `git clone https://github.com/jocelynpender/fna-query.git`
 
-Open an R console.
-`install.packages("WikipediR")`
-`install.packages("tidyverse")`
+Open an R console. Type
+```
+install.packages("WikipediR")
+install.packages("tidyverse")
+```
 
-##### 2. Install with packrat
+##### 2. Install packages with packrat
+
+The benefit to installing packages with packrat:
+* The package versions have been tested alongside the R FNA query scripts
 
 Open a terminal.
-`git clone https://github.com/jocelynpender/fna-query.git`
+Type `git clone https://github.com/jocelynpender/fna-query.git`
 
-Open an R console.
-`install.packages("packrat")`
-`packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", "<path_to_your_dir>")`
+Open an R console. Type
+```
+install.packages("packrat")
+packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", "<path_to_your_dir>")
+```
 
 #### Usage
-(1) Open an R console
-(2) Open the [https://github.com/jocelynpender/fna-query/blob/master/R/src/run_query.R](run_query.R) script
-(3) Prepare your query: 
+1. Open an R console
+2. Open the [https://github.com/jocelynpender/fna-query/blob/master/R/src/run_query.R](run_query.R) script
+3. Prepare your query: 
 
 ##### Option A: Return taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Distribution::Nunavut]]`
@@ -99,7 +130,7 @@ See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distri
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 
-### Python
+### Use Python
 
 This section assumes you are familiar with Python programming. 
 
@@ -109,10 +140,10 @@ This section assumes you are familiar with Python programming.
 
 You'll need to create an account to use the API with Python
 
-(1) Create your account
+1. Create your account
 http://beta.floranorthamerica.org/Special:CreateAccount
 
-(2) Create a file called `local.py` with your credentials. It should look like this:
+2. Create a file called `local.py` with your credentials. It should look like this:
 
 ```
 USERNAME = 'User'
@@ -147,9 +178,9 @@ conda env create -f fna-query.yml
 
 #### Usage
 
-(1) Open a terminal.
-(2) Prepare your query. E.g., `[[Special status::Introduced]]`
-(3) Run your query using:
+1. Open a terminal.
+2. Prepare your query. E.g., `[[Special status::Introduced]]`
+3. Run your query using:
 ```
 cd python
 python -m src.run_query --output_file_name "output_file_name.csv" --query_string "[[Query::here]]"
@@ -180,11 +211,6 @@ See
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/python/demo_queries
 
-### Semantic MediaWiki semantic search syntax
-
-Semantic MediaWiki Query Syntax
-https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
-https://www.semantic-mediawiki.org/wiki/Help:Searc
 
 ## Getting help
 
