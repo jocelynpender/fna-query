@@ -1,4 +1,10 @@
-# Query the Flora of North America Semantic MediaWiki
+<h1 align="center">
+  <br>
+  ![Logo](garland_logo.gif)
+  <br>
+  Query the Flora of North America Semantic MediaWiki
+  <br>
+</h1>
 
 These scripts allow you to query the `http://beta.semanticfna.org/` [API module "ask"](https://www.semantic-mediawiki.org/wiki/Help:API:ask) using **R or Python**.
 
@@ -33,14 +39,13 @@ Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
 
-<p align="center"><img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="100">
-
 ## Use R
-</p>
 
-<details><summary><b>Show instructions</b></summary>
+<img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="100">
 
 This section assumes you are familiar with the R programming language. 
+
+<details><summary><b>Show instructions</b></summary>
 
 ### Prerequisites
 
@@ -141,14 +146,13 @@ Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 </details>
 
-<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100">
-
 ## Use Python
-</p>
 
-<details><summary><b>Show instructions</b></summary>
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100">
 
 This section assumes you are familiar with Python programming. 
+
+<details><summary><b>Show instructions</b></summary>
 
 ### Prerequisites
 
@@ -247,6 +251,3 @@ https://github.com/jocelynpender/fna-query/issues
 
 ### Merging multiple CSV files
 Sometimes you'll need to batch the API return results. Here is an [R script for merging multiple CSV files](https://github.com/jocelynpender/fna-query/blob/master/R/src/merge.R).
-
-**TODO:**
-improve inline documentation in my script (R & Python): e.g, what are properties_texts???
