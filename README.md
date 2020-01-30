@@ -1,6 +1,6 @@
 # Query the Flora of North America Semantic MediaWiki
 
-These scripts leverage the `http://beta.semanticfna.org/` API.
+These scripts allow you to query the `http://beta.semanticfna.org/` [https://www.semantic-mediawiki.org/wiki/Help:API:ask](API module "ask") using **R or Python**.
 
   * [Getting started](#getting-started)
     + [Prepare your query](#prepare-your-query)
@@ -10,40 +10,49 @@ These scripts leverage the `http://beta.semanticfna.org/` API.
     + [Bug reports](#bug-reports)
   * [Resources](#resources)
     + [Dependency documentation](#dependency-documentation)
-    + [Merging Multiple CSV Files](#merging-multiple-csv-files)
+    + [Merging multiple CSV files](#merging-multiple-csv-files)
 
 ## Getting started
 
-You can use R or Python to programmatically query the Flora of North America. 
-
 ### Prepare your query
 
-The Flora of North America Semantic MediaWiki can be queried using the Semantic MediaWiki semantic search syntax.
+The [http://beta.semanticfna.org/](Flora of North America Semantic MediaWiki) can be queried using the [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search](Semantic MediaWiki semantic search syntax).
 
 In brief, you must have a **condition**: 
+
 `[[Authority::Linnaeus]]`
 
 You can optionally return **properties** of the taxa matching your condition:
+
 `?Distribution`
+
+Sample queries can be found here:
+* http://dev.floranorthamerica.org/Sample_Queries
 
 Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
 
+***
+![R](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png)
+Image by [https://commons.wikimedia.org/wiki/User:Mwtoews](Mwtoews) on [https://commons.wikimedia.org/wiki/File:R_logo.svg](Wikimedia Commons).
+
 ### Use R
+<details><summary><b>Show instructions</b></summary>
 
 This section assumes you are familiar with the R programming language. 
 
 #### Prerequisites
 
-* R 3.x
-* WikipediR
-* tidyverse
+* [https://www.r-project.org/](R 3.x)
+* [https://cran.r-project.org/web/packages/WikipediR/index.html](WikipediR)
+* [https://www.tidyverse.org/](tidyverse)
 
 There are two options for getting ready:
 ##### 1. Manual install of R packages
 
 Open a terminal.
+
 Type `git clone https://github.com/jocelynpender/fna-query.git`
 
 Open an R console. Type
@@ -58,24 +67,25 @@ The benefit to installing packages with packrat:
 * The package versions have been tested alongside the R FNA query scripts
 
 Open a terminal.
+
 Type `git clone https://github.com/jocelynpender/fna-query.git`
 
 Open an R console. Type
 ```
 install.packages("packrat")
-packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", "<path_to_your_dir>")
+packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", ".")
 ```
 
-#### Usage
+#### Run your query
 1. Open an R console
 2. Open the [https://github.com/jocelynpender/fna-query/blob/master/R/src/run_query.R](run_query.R) script
-3. Prepare your query: 
+3. Run your query: 
 
 ##### Option A: Return taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Distribution::Nunavut]]`
 
-Use `ask_query_titles`
-Returns only a list of Taxon names that match your query
+Use `ask_query_titles`.
+It returns only a list of Taxon names that match your query.
 
 In the `fna-query` directory, run
 ```
@@ -87,7 +97,7 @@ page_titles_vector <- ask_query_titles("[[Distribution::Nunavut]]", "output_file
 E.g., `[[Distribution::Nunavut]]|?Taxon family`
 
 Use `ask_query_titles_properties`
-Returns a list of Taxon names **and** associated properties asked for by your query
+It returns a list of Taxon names **and** associated properties asked for by your query
 
 In the `fna-query` directory, run
 ```
@@ -100,7 +110,7 @@ properties_texts_data_frame <- ask_query_titles_properties("[[Distribution::Nuna
 ##### Option A: Return taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Distribution::Nunavut]]`
 ```
-page_titles_vector
+> page_titles_vector
 
 [1] "Abietinella abietina"                     
 [2] "Achillea millefolium"                     
@@ -109,12 +119,12 @@ page_titles_vector
  ...
 ```
 
-See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distribution/nunavut_taxa.csv
+See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distribution/nunavut_taxa.csv for a sample output file.
 
 ##### Option B: Return taxa names and properties (i.e., query includes a ? parameter)
 E.g., `[[Distribution::Nunavut]]|?Taxon family`
 ```
-properties_texts_data_frame
+> properties_texts_data_frame
                                             Taxon family
 Abietinella abietina                         Thuidiaceae
 Achillea millefolium                          Asteraceae
@@ -123,12 +133,16 @@ Agrostis anadyrensis                             Poaceae
  ...
 ```
 
-See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distribution/nunavut_taxa_family_name.csv
+See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distribution/nunavut_taxa_family_name.csv for a sample output file.
 
 #### Run a demo query
 
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
+</details>
+
+***
+![Python](https://commons.wikimedia.org/wiki/File:Python_logo_and_wordmark.svg#/media/File:Python_logo_and_wordmark.svg)
 
 ### Use Python
 
@@ -152,9 +166,9 @@ PASSWORD = 'Password'
 
 ##### Dependencies
 
-* Python 3.7
-* mwclient
-* pandas
+* [https://www.python.org/](Python 3.7)
+* [https://pypi.org/project/mwclient/](mwclient)
+* [https://pypi.org/project/pandas/](pandas)
 
 ##### 1. Use pip
 
@@ -176,7 +190,7 @@ cd fna-query
 conda env create -f fna-query.yml
 ```
 
-#### Usage
+#### Run your query
 
 1. Open a terminal.
 2. Prepare your query. E.g., `[[Special status::Introduced]]`
@@ -211,7 +225,6 @@ See
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/python/demo_queries
 
-
 ## Getting help
 
 Contact me at jocelyn.pender@canada.ca for support.
@@ -228,7 +241,7 @@ https://github.com/jocelynpender/fna-query/issues
 Read more about the [https://cran.r-project.org/web/packages/WikipediR/WikipediR.pdf](WikipediR package for R). 
 Read more about the [https://mwclient.readthedocs.io/en/latest/index.html](mwclient for Python).
 
-### Merging Multiple CSV Files
+### Merging multiple CSV files
 Sometimes you'll need to batch the API return results. Here is an [https://github.com/jocelynpender/fna-query/blob/master/R/src/merge.R](R script for merging multiple CSV files).
 
 **TODO:**
