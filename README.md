@@ -1,6 +1,6 @@
 <h1 align="center">
   <br>
-  ![Logo](garland_logo.gif)
+  <img src="https://github.com/jocelynpender/fna-query/blob/master/garland_logo.gif">
   <br>
   Query the Flora of North America Semantic MediaWiki
   <br>
