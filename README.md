@@ -4,8 +4,8 @@ These scripts allow you to query the `http://beta.semanticfna.org/` [API module 
 
   * [Getting started](#getting-started)
     + [Prepare your query](#prepare-your-query)
-    + [Use R](#use-r)
-    + [Use Python](#use-python)
+  * [Use R](#use-r)
+  * [Use Python](#use-python)
   * [Getting help](#getting-help)
     + [Bug reports](#bug-reports)
   * [Resources](#resources)
@@ -34,23 +34,22 @@ Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
 
 ***
-### Use R
+## Use R
 
-<img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png align="right" title="R" width="120" height="178">
-Image by [Mwtoews](https://commons.wikimedia.org/wiki/User:Mwtoews) on [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:R_logo.svg).
+<img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="178">
 
 <details><summary><b>Show instructions</b></summary>
 
 This section assumes you are familiar with the R programming language. 
 
-#### Prerequisites
+### Prerequisites
 
 * [R 3.x](https://www.r-project.org/)
 * [WikipediR](https://cran.r-project.org/web/packages/WikipediR/index.html)
 * [tidyverse](https://www.tidyverse.org/)
 
 There are two options for getting ready:
-##### 1. Manual install of R packages
+#### 1. Manual install of R packages
 
 Open a terminal.
 
@@ -62,7 +61,7 @@ install.packages("WikipediR")
 install.packages("tidyverse")
 ```
 
-##### 2. Install packages with packrat
+#### 2. Install packages with packrat
 
 The benefit to installing packages with packrat:
 * The package versions have been tested alongside the R FNA query scripts
@@ -77,12 +76,12 @@ install.packages("packrat")
 packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", ".")
 ```
 
-#### Run your query
+### Run your query
 1. Open an R console
 2. Open the [run_query.R](https://github.com/jocelynpender/fna-query/blob/master/R/src/run_query.R) script
 3. Run your query: 
 
-##### Option A: Return taxa names only (i.e., query does not include ? parameter)
+#### Option A: Return taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Distribution::Nunavut]]`
 
 Use `ask_query_titles`.
@@ -94,7 +93,7 @@ source("R/src/query.R")
 page_titles_vector <- ask_query_titles("[[Distribution::Nunavut]]", "output_file_name.csv")
 ```
 
-##### Option B: Return taxa names and properties (i.e., query includes a ? parameter)
+#### Option B: Return taxa names and properties (i.e., query includes a ? parameter)
 E.g., `[[Distribution::Nunavut]]|?Taxon family`
 
 Use `ask_query_titles_properties`
@@ -106,9 +105,9 @@ source("R/src/query.R")
 properties_texts_data_frame <- ask_query_titles_properties("[[Distribution::Nunavut]]|?Taxon family", "output_file_name.csv")
 ```
 
-#### Expected output
+### Expected output
 
-##### Option A: Return taxa names only (i.e., query does not include ? parameter)
+#### Option A: Return taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Distribution::Nunavut]]`
 ```
 > page_titles_vector
@@ -122,7 +121,7 @@ E.g., `[[Distribution::Nunavut]]`
 
 See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distribution/nunavut_taxa.csv for a sample output file.
 
-##### Option B: Return taxa names and properties (i.e., query includes a ? parameter)
+#### Option B: Return taxa names and properties (i.e., query includes a ? parameter)
 E.g., `[[Distribution::Nunavut]]|?Taxon family`
 ```
 > properties_texts_data_frame
@@ -136,7 +135,7 @@ Agrostis anadyrensis                             Poaceae
 
 See https://github.com/jocelynpender/fna-query/blob/master/R/demo_queries/distribution/nunavut_taxa_family_name.csv for a sample output file.
 
-#### Run a demo query
+### Run a demo query
 
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
@@ -144,16 +143,16 @@ https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 
 ***
 
-### Use Python
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" align="right" title="Python" width="120" height="178">
+## Use Python
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="178">
 
 <details><summary><b>Show instructions</b></summary>
 
 This section assumes you are familiar with Python programming. 
 
-#### Prerequisites
+### Prerequisites
 
-##### Create an account
+#### Create an account
 
 You'll need to create an account to use the API with Python
 
@@ -167,13 +166,13 @@ USERNAME = 'User'
 PASSWORD = 'Password'
 ```
 
-##### Dependencies
+#### Dependencies
 
 * [Python 3.7](https://www.python.org/)
 * [mwclient](https://pypi.org/project/mwclient/)
 * [pandas](https://pypi.org/project/pandas/)
 
-##### 1. Use pip
+#### 1. Use pip
 
 `requirements.txt` has been generated with `pip freeze > requirements.txt`
 
@@ -183,7 +182,7 @@ cd fna-query
 pip install -r requirements.txt
 ```
 
-##### 2. Use conda
+#### 2. Use conda
 
 The project was built within a conda environment. A conda YAML file has been generated with `conda env export > fna-query.yml`.
 
@@ -193,7 +192,7 @@ cd fna-query
 conda env create -f fna-query.yml
 ```
 
-#### Run your query
+### Run your query
 
 1. Open a terminal.
 2. Prepare your query. E.g., `[[Special status::Introduced]]`
@@ -205,25 +204,25 @@ python -m src.run_query --output_file_name "output_file_name.csv" --query_string
 
 The `-m` flag tells Python to run the script `run_query.py` and **import the src module**.
 
-#### Expected output
+### Expected output
 
 If your query results are extensive, the query will take some time to process. Please be patient. 
 
-##### Option A: Taxa names only (i.e., query does not include ? parameter)
+#### Option A: Taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Illustrator::+]][[Illustration::Present]]`
 
 `python -m src.run_query --output_file_name "illustrated_taxa.csv" --query_string "[[Illustrator::+]][[Illustration::Present]]"`
 
 See
 
-##### Option B: Taxa names and properties (i.e., query includes a ? parameter)
+#### Option B: Taxa names and properties (i.e., query includes a ? parameter)
 E.g., `[[Illustrator::+]][[Illustration::Present]]|?Taxon family`
 
 `python -m src.run_query --output_file_name "illustrated_taxa_taxon_family.csv" --query_string "[[Illustrator::+]][[Illustration::Present]]|?Taxon family"`
 
 See
 
-#### Run a demo query
+### Run a demo query
 
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/python/demo_queries
