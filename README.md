@@ -33,9 +33,8 @@ Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
 
+<img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="100" align="center">
 ## Use R
-
-<img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="100" align="right">
 
 <details><summary><b>Show instructions</b></summary>
 
@@ -140,8 +139,8 @@ Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 </details>
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100" align="center">
 ## Use Python
-<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100" align="right">
 
 <details><summary><b>Show instructions</b></summary>
 
@@ -239,8 +238,8 @@ https://github.com/jocelynpender/fna-query/issues
 
 ### Dependency documentation
 
-Read more about [the WikipediR package for R](https://cran.r-project.org/web/packages/WikipediR/WikipediR.pdf). 
-Read more about the [mwclient for Python](https://mwclient.readthedocs.io/en/latest/index.html).
+* Read more about [the WikipediR package for R](https://cran.r-project.org/web/packages/WikipediR/WikipediR.pdf). 
+* Read more about the [mwclient for Python](https://mwclient.readthedocs.io/en/latest/index.html).
 
 ### Merging multiple CSV files
 Sometimes you'll need to batch the API return results. Here is an [R script for merging multiple CSV files](https://github.com/jocelynpender/fna-query/blob/master/R/src/merge.R).
