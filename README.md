@@ -1,6 +1,6 @@
 # Query the Flora of North America Semantic MediaWiki
 
-These scripts allow you to query the `http://beta.semanticfna.org/` [https://www.semantic-mediawiki.org/wiki/Help:API:ask](API module "ask") using **R or Python**.
+These scripts allow you to query the `http://beta.semanticfna.org/` [API module "ask"](https://www.semantic-mediawiki.org/wiki/Help:API:ask) using **R or Python**.
 
   * [Getting started](#getting-started)
     + [Prepare your query](#prepare-your-query)
@@ -16,7 +16,7 @@ These scripts allow you to query the `http://beta.semanticfna.org/` [https://www
 
 ### Prepare your query
 
-The [http://beta.semanticfna.org/](Flora of North America Semantic MediaWiki) can be queried using the [https://www.semantic-mediawiki.org/wiki/Help:Semantic_search](Semantic MediaWiki semantic search syntax).
+The [Flora of North America Semantic MediaWiki](http://beta.semanticfna.org/) can be queried using the [Semantic MediaWiki semantic search syntax](https://www.semantic-mediawiki.org/wiki/Help:Semantic_search).
 
 In brief, you must have a **condition**: 
 
@@ -34,19 +34,20 @@ Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
 
 ***
-![R](https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png)
-Image by [https://commons.wikimedia.org/wiki/User:Mwtoews](Mwtoews) on [https://commons.wikimedia.org/wiki/File:R_logo.svg](Wikimedia Commons).
-
 ### Use R
+
+<img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png align="right" title="R" width="120" height="178">
+Image by [Mwtoews](https://commons.wikimedia.org/wiki/User:Mwtoews) on [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:R_logo.svg).
+
 <details><summary><b>Show instructions</b></summary>
 
 This section assumes you are familiar with the R programming language. 
 
 #### Prerequisites
 
-* [https://www.r-project.org/](R 3.x)
-* [https://cran.r-project.org/web/packages/WikipediR/index.html](WikipediR)
-* [https://www.tidyverse.org/](tidyverse)
+* [R 3.x](https://www.r-project.org/)
+* [WikipediR](https://cran.r-project.org/web/packages/WikipediR/index.html)
+* [tidyverse](https://www.tidyverse.org/)
 
 There are two options for getting ready:
 ##### 1. Manual install of R packages
@@ -78,7 +79,7 @@ packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", ".")
 
 #### Run your query
 1. Open an R console
-2. Open the [https://github.com/jocelynpender/fna-query/blob/master/R/src/run_query.R](run_query.R) script
+2. Open the [run_query.R](https://github.com/jocelynpender/fna-query/blob/master/R/src/run_query.R) script
 3. Run your query: 
 
 ##### Option A: Return taxa names only (i.e., query does not include ? parameter)
@@ -142,9 +143,11 @@ https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 </details>
 
 ***
-![Python](https://commons.wikimedia.org/wiki/File:Python_logo_and_wordmark.svg#/media/File:Python_logo_and_wordmark.svg)
 
 ### Use Python
+<img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" align="right" title="Python" width="120" height="178">
+
+<details><summary><b>Show instructions</b></summary>
 
 This section assumes you are familiar with Python programming. 
 
@@ -166,9 +169,9 @@ PASSWORD = 'Password'
 
 ##### Dependencies
 
-* [https://www.python.org/](Python 3.7)
-* [https://pypi.org/project/mwclient/](mwclient)
-* [https://pypi.org/project/pandas/](pandas)
+* [Python 3.7](https://www.python.org/)
+* [mwclient](https://pypi.org/project/mwclient/)
+* [pandas](https://pypi.org/project/pandas/)
 
 ##### 1. Use pip
 
@@ -225,6 +228,8 @@ See
 Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/python/demo_queries
 
+</details>
+
 ## Getting help
 
 Contact me at jocelyn.pender@canada.ca for support.
@@ -238,11 +243,11 @@ https://github.com/jocelynpender/fna-query/issues
 
 ### Dependency documentation
 
-Read more about the [https://cran.r-project.org/web/packages/WikipediR/WikipediR.pdf](WikipediR package for R). 
-Read more about the [https://mwclient.readthedocs.io/en/latest/index.html](mwclient for Python).
+Read more about [the WikipediR package for R](https://cran.r-project.org/web/packages/WikipediR/WikipediR.pdf). 
+Read more about the [mwclient for Python](https://mwclient.readthedocs.io/en/latest/index.html).
 
 ### Merging multiple CSV files
-Sometimes you'll need to batch the API return results. Here is an [https://github.com/jocelynpender/fna-query/blob/master/R/src/merge.R](R script for merging multiple CSV files).
+Sometimes you'll need to batch the API return results. Here is an [R script for merging multiple CSV files](https://github.com/jocelynpender/fna-query/blob/master/R/src/merge.R).
 
 **TODO:**
 improve inline documentation in my script (R & Python): e.g, what are properties_texts???
