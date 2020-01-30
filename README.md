@@ -33,9 +33,10 @@ Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
 
-<p align="center"><img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="100"></p>
+<p align="center"><img src=https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/R_logo.svg/724px-R_logo.svg.png title="R" height="100">
 
 ## Use R
+</p>
 
 <details><summary><b>Show instructions</b></summary>
 
@@ -140,9 +141,10 @@ Don't know what to query? See the demo queries here:
 https://github.com/jocelynpender/fna-query/tree/master/R/demo_queries
 </details>
 
-<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100"></p>
+<p align="center"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Python_logo_and_wordmark.svg" title="Python" height="100">
 
 ## Use Python
+</p>
 
 <details><summary><b>Show instructions</b></summary>
 
