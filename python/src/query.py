@@ -75,11 +75,12 @@ def ask_query(query_string, output_file_name):
     output_file_name: output file name
     query_string: a query string to run ask SMW ask query API, e.g.:
 
-    # query_string = "[[Authority::Linnaeus]][[Distribution::Nunavut]]|?Taxon family"
-    # query_string = "[[Authority::Miller]]|?Taxon family|?Volume"
-    # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Illustration|?Distribution"
-    # query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Distribution"
-    # query_string = "[[Illustrator::+]][[Illustration::Present]]"
+    Examples:
+        query_string = "[[Authority::Linnaeus]][[Distribution::Nunavut]]|?Taxon family"
+        query_string = "[[Authority::Miller]]|?Taxon family|?Volume"
+        query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Illustration|?Distribution"
+        query_string = "[[Distribution::Ont.]][[Author::Geoffrey A. Levin]]|?Taxon family|?Volume|?Distribution"
+        query_string = "[[Illustrator::+]][[Illustration::Present]]"
 
     Returns
     -------
