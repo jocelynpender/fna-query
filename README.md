@@ -32,6 +32,14 @@ You can optionally return **properties** of the taxa matching your condition:
 
 `?Distribution`
 
+Putting this all together using pipes, we would have a query like this:
+
+`[[Authority::Linnaeus]]|?Distribution`
+
+Or this:
+
+`[[Authority::Linnaeus]]|?Distribution|?Taxon family`
+
 Sample queries can be found here:
 * http://dev.floranorthamerica.org/Sample_Queries
 
