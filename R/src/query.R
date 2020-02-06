@@ -7,7 +7,7 @@ ask_query_url <- function(query_string, query_param) {
   base_url = "http://beta.semanticfna.org/w/api.php?action=ask&query="
   seps <- list(pipe = "%7C", eq = "%3D")
   prep_params <- map2(names(query_param), query_param, ~ paste(.x, .y, sep=seps$eq))
-  paste_params <- paste(prep_params, collapse=seps$pipe)
+  paste_params <- paste(c("", prep_params), collapse=seps$pipe, sep=seps$pipe)
   url <- paste(base_url, query_string, paste_params, sep = "")
   return(url)
 }
