@@ -21,6 +21,7 @@ run_query <- function(query_string) {
     query_results <- query(url, out_class = "none") # Uses the WikipediR query function
     query_results_list[[length(query_results_list) + 1]] <- query_results$query$results
     query_offset <- query_results$`query-continue-offset`
+    print(paste("Appending batch", query_offset - 500, "-", query_offset, "to query results"))
   }
   query_results_list <- do.call(c, query_results_list) # Fix up list formatting
   return(query_results_list)
