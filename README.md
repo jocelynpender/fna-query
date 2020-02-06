@@ -36,7 +36,7 @@ Putting this all together using pipes, we would have a query like this:
 
 `[[Authority::Linnaeus]]|?Distribution`
 
-Or this:
+Or with additional properties requested, like this:
 
 `[[Authority::Linnaeus]]|?Distribution|?Taxon family`
 
