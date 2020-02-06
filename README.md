@@ -68,7 +68,7 @@ install.packages("tidyverse")
 
 #### 2. Install packages with packrat
 
-The benefit to installing packages with packrat:
+**Why install packages with packrat?**
 * The package versions have been tested alongside the R FNA query scripts
 
 Open a terminal.
