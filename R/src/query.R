@@ -4,7 +4,7 @@ require("tidyverse")
 ask_query_url <- function(query_string, query_param) {
   # Concatenate a query_string with the http API ask query module URL
   # for the FNA Semantic MediaWiki instance
-  base_url = "http://beta.semanticfna.org/w/api.php?action=ask&query="
+  base_url <- "http://beta.semanticfna.org/w/api.php?action=ask&query="
   seps <- list(pipe = "%7C", eq = "%3D")
   prep_params <- map2(names(query_param), query_param, ~ paste(.x, .y, sep=seps$eq))
   paste_params <- paste(c("", prep_params), collapse=seps$pipe, sep=seps$pipe)
@@ -20,8 +20,10 @@ run_query <- function(query_string) {
     url <- ask_query_url(query_string, query_param = list(limit = "500", offset = query_offset))
     query_results <- query(url, out_class = "none") # Uses the WikipediR query function
     query_results_list[[length(query_results_list) + 1]] <- query_results$query$results
+    print(paste("Appending batch", query_offset, "-",
+                ifelse(is.null(query_results$`query-continue-offset`), "end", query_results$`query-continue-offset`),
+                "to query results")) # Give an indication of progress of the download
     query_offset <- query_results$`query-continue-offset`
-    print(paste("Appending batch", query_offset - 500, "-", query_offset, "to query results"))
   }
   query_results_list <- do.call(c, query_results_list) # Fix up list formatting
   return(query_results_list)
@@ -51,7 +53,7 @@ query_property_texts <- function(printouts, property) {
   # with the property name to get the label for selecting the property text returned by the query
   property_text <- unlisted_printouts[property_text_labels]  # select the property texts using
   # 'Taxon name.Property name'. This will collect data perfectly well for string properties.
-  grepped_property_text_labels = property_text_labels %>% map(~names(unlisted_printouts)[grepl(., 
+  grepped_property_text_labels <- property_text_labels %>% map(~names(unlisted_printouts)[grepl(., 
     names(unlisted_printouts))]) %>% unlist # This takes the above 'Taxon name.Property name'
   # labels and matches them everywhere within the label list. If a property is stored as
   # fulltext because it is a page type there will be more than one hit per 'Taxon name.Property name'
