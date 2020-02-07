@@ -61,9 +61,6 @@ This section assumes you are familiar with the R programming language.
 * [WikipediR](https://cran.r-project.org/web/packages/WikipediR/index.html)
 * [tidyverse](https://www.tidyverse.org/)
 
-There are two options for getting ready:
-#### 1. Manual install of R packages
-
 Open a terminal.
 
 Type `git clone https://github.com/jocelynpender/fna-query.git`
@@ -72,21 +69,6 @@ Open an R console. Type
 ```
 install.packages("WikipediR")
 install.packages("tidyverse")
-```
-
-#### 2. Install packages with packrat
-
-**Why install packages with packrat?**
-* The package versions have been tested alongside the R FNA query scripts
-
-Open a terminal.
-
-Type `git clone https://github.com/jocelynpender/fna-query.git`
-
-Open an R console. Type
-```
-install.packages("packrat")
-packrat::unbundle("packrat/bundles/fna-query-2020-01-30.tar.gz", ".")
 ```
 
 ### Run your query
