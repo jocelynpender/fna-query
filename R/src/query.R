@@ -65,7 +65,7 @@ query_property_texts <- function(printouts, property) {
     property_text <- query_page_property_texts(printouts, unlisted_printouts, property)
   } else {
     property_text <- unlisted_printouts %>% .[grepl(property, names(.))]
-    names(property_text) <- lapply(names(property_text), function(x) strsplit(x, "\\.")[[1]][1]) %>% unlist # Clean this up
+    names(property_text) <- lapply(names(property_text), function(x) strsplit(x, "\\.\\S")[[1]][1]) %>% unlist # Clean this up
   }
   return(property_text)
 }
