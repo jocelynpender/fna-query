@@ -38,6 +38,15 @@ query_page_titles <- function(query_results) {
   return(page_titles_vector)
 }
 
+
+query_page_property_texts <- function(printouts, unlisted_printouts, property) {
+  property_fulltext <- paste(property, "fulltext", sep = ".")
+  property_text <- unlisted_printouts %>% .[grepl(property_fulltext, names(.))] # this works for property type = page
+  names(property_text) <- names(printouts)
+  return(property_text)
+}
+
+
 query_property_texts <- function(printouts, property) {
   # This function is used to isolate property text from other query results 
   # returned by the WikipediR query function and return property texts in a clean named vector
@@ -45,31 +54,19 @@ query_property_texts <- function(printouts, property) {
   # This function handles the differences in returned data between property types (string property, 
   # page property, properties with multiple possible values)
   # Input: 
-  # printouts: query results returned by the WikipediR query function 
-  # property: property name (e.g., Illustrator, Distribution, etc.)
+    # printouts: query results returned by the WikipediR query functionm (full set of results) 
+    # property: property name you wish to extract from the results (e.g., Illustrator, Distribution, etc.)
   # Output: a named vector with property text as values and Taxon name as vector names
   unlisted_printouts <- printouts %>% unlist
   property_text_labels <- names(printouts) %>% paste(., property, sep = ".")  # paste the Taxon name
   # with the property name to get the label for selecting the property text returned by the query
-  property_text <- unlisted_printouts[property_text_labels]  # select the property texts using
-  # 'Taxon name.Property name'. This will collect data perfectly well for string properties.
-  grepped_property_text_labels <- property_text_labels %>% map(~names(unlisted_printouts)[grepl(., 
-    names(unlisted_printouts))]) %>% unlist # This takes the above 'Taxon name.Property name'
-  # labels and matches them everywhere within the label list. If a property is stored as
-  # fulltext because it is a page type there will be more than one hit per 'Taxon name.Property name'
-  # (one each for fulltext, fullurl, namespace, etc.) or it has more than one returned value, 
-  # there will be multiple hits per label, e.g., 'Taxon name.Property name2', 'Taxon name.Property name3', ...
-  if (length(grepped_property_text_labels) > length(property_text)) {
-    property_text_labels_full_text <- paste(property_text_labels, "fulltext", 
-      sep = ".") # this works for property type = page
-    property_text <- unlisted_printouts[property_text_labels_full_text]
-    if (any(grepl("\\d$", grepped_property_text_labels))) { # alternatively, this grabs text 
-      # if properties are numbered
-      property_text <- unlisted_printouts[grepped_property_text_labels]
-    }
+  matched_property_text_labels <- sum(property_text_labels %in% names(unlisted_printouts))
+  if (matched_property_text_labels == 0) {
+    property_text <- query_page_property_texts(printouts, unlisted_printouts, property)
+  } else {
+    property_text <- unlisted_printouts %>% .[grepl(property, names(.))]
+    names(property_text) <- lapply(names(property_text), function(x) strsplit(x, "\\.")[[1]][1]) %>% unlist # Clean this up
   }
-  names(property_text) <- names(property_text) %>% gsub(property, "", .) %>% gsub("fulltext", 
-    "", .) %>% gsub("\\d", "", .) %>% gsub("\\.", "", .)  # Clean up property text labels
   return(property_text)
 }
 
