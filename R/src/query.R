@@ -79,7 +79,7 @@ properties_texts_to_data_frame <- function(properties_texts, properties) {
   properties_texts_list <- properties_texts %>% map(~data.frame(., names(.)))  # Build data frames
   properties_texts_list <- lapply(seq_along(properties_texts_list), function(i) setNames(properties_texts_list[[i]], 
     c(properties[i], "Taxon name")))  # Fix up column names
-  properties_texts_data_frame <- properties_texts_list %>% reduce(left_join, by = "Taxon name")  # Left join of data frames by Taxon name
+  properties_texts_data_frame <- properties_texts_list %>% reduce(full_join, by = "Taxon name")  # Outer join of data frames by Taxon name
   return(properties_texts_data_frame)
 }
 
