@@ -6,7 +6,7 @@
   <br>
 </h1>
 
-These scripts allow you to query the `http://beta.semanticfna.org/` [API module "ask"](https://www.semantic-mediawiki.org/wiki/Help:API:ask) using **R or Python**.
+These scripts allow you to query the `http://beta.semanticfna.org/` [API module "ask"](https://www.semantic-mediawiki.org/wiki/Help:API:ask) using **R or Python**. They return a CSV file of the results.
 
   * [Getting started](#getting-started)
     + [Prepare your query](#prepare-your-query)
@@ -186,6 +186,7 @@ conda env create -f fna-query.yml
 1. Open a terminal.
 2. Prepare your query. E.g., `[[Special status::Introduced]]`
 3. Run your query using:
+(if using conda, start with: `conda activate environment-name`)
 ```
 cd fna-query
 cd python
@@ -203,14 +204,14 @@ E.g., `[[Illustrator::+]][[Illustration::Present]]`
 
 `python -m src.run_query --output_file_name "illustrated_taxa.csv" --query_string "[[Illustrator::+]][[Illustration::Present]]"`
 
-See
+See https://github.com/jocelynpender/fna-query/blob/master/python/demo_queries/distribution/nunavut_taxa.csv for a sample output file.
 
 #### Option B: Taxa names and properties (i.e., query includes a ? parameter)
 E.g., `[[Illustrator::+]][[Illustration::Present]]|?Taxon family`
 
 `python -m src.run_query --output_file_name "illustrated_taxa_taxon_family.csv" --query_string "[[Illustrator::+]][[Illustration::Present]]|?Taxon family"`
 
-See
+See https://github.com/jocelynpender/fna-query/blob/master/python/demo_queries/distribution/nunavut_taxa_family_name.csv for a sample output file.
 
 ### Run a demo query
 
