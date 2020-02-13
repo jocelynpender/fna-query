@@ -1,0 +1,8 @@
+.Rhistory
+.RData
+.Ruserdata
+.Rprofile
+packrat/lib*/
+packrat/src/
+local.py
+__pycache__
