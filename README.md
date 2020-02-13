@@ -153,12 +153,7 @@ You'll need to create an account to use the API with Python
 1. Create your account
 http://beta.floranorthamerica.org/Special:CreateAccount
 
-2. Create a file called `local.py` with your credentials. It should look like this:
-
-```
-USERNAME = 'User'
-PASSWORD = 'Password'
-```
+2. Find the file called `local.py.example` in the `python/src` folder. Rename it to `local.py` and add your credentials.
 
 #### Dependencies
 
@@ -192,6 +187,7 @@ conda env create -f fna-query.yml
 2. Prepare your query. E.g., `[[Special status::Introduced]]`
 3. Run your query using:
 ```
+cd fna-query
 cd python
 python -m src.run_query --output_file_name "output_file_name.csv" --query_string "[[Query::here]]"
 ```
