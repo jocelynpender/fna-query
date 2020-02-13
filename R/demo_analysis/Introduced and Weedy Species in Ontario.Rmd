@@ -1,0 +1,234 @@
+---
+title: "Introduced and Weedy Species in Ontario"
+output:
+  html_document:
+    df_print: paged
+---
+
+The botanical informatics group has been hard at work mobilizing data buried inside the Flora of North America’s volumes. We’ve created a Semantic MediaWiki instance to house the data we’ve extracted. 
+
+Querying the Flora is *now easier than ever*. You can run queries with the Semantic MediaWiki Semantic search interface or programmatically with your data science language of choice (R or Python).
+
+Here, I will investigate the number of introduced and weedy species in my home province, Ontario. I want to know:
+
+1. how many plants in Ontario are introduced (number and percentage)
+2. the likelihood is that the plant is introduced, given it is weedy (conditional probability)
+3. the taxonomic make-up of these two groups (introduced and weedy).
+
+<center>
+![](https://upload.wikimedia.org/wikipedia/en/d/d7/Thistle_with_cuckoo_spit.jpeg){width=500px}
+
+
+Image of *Cirsium arvense* by [MrJones](https://en.wikipedia.org/wiki/User:MrJones).
+</center>
+
+This exploration leverages **Flora of North America data**. I’ll do it in R.
+
+```{r packageimport}
+library(ggplot2)
+library(reshape2) # for transforming wide data
+library(packcircles) # For bubble chart
+```
+
+# Build the query
+
+First, I'll browse the sample queries available on the Flora of North America Semantic MediaWiki platform. To get the data I want, I’ll simply modify the sample queries.
+
+I want to find the list of taxa that are found in Ontario (Distribution = Ont.). Additionally, I want to know if a plant is described as weedy or introduced (Special status = Introduced, Special status = Weedy)*. I’ll download taxonomic information (Taxon family, Taxon rank, Taxon parent: liiinksss) to explore the taxonomic breakdown of my results.
+
+Putting this all together using the Semantic search query syntax required to query Semantic MediaWiki, I get:
+
+> [[Distribution::Ont.]]|?Special status|?Introduced|?Taxon family|?Taxon rank|?Taxon parent
+
+# Run the query
+
+Using R convenience scripts found [here](https://github.com/jocelynpender/fna-query), I'll pull down the data that match my [Semantic MediaWiki query](https://www.semantic-mediawiki.org/wiki/Help:Semantic_search).
+
+```{r dataimport, message=FALSE}
+source("../src/query.R") # This loads the requisite packages: tidyverse and WikipediR
+# ont_spp <- ask_query_titles_properties("[[Distribution::Ont.]]|?Special status|?Introduced|?Taxon family|?Taxon parent|?Volume", "ontario_species.csv")
+ont_spp <- read_csv("ontario_species.csv")
+```
+
+# Clean the data
+
+The introduction status of a taxon provided by the Flora of North America is NA if no information has been provided by the treatment author for a taxon. I am going to make the assumption that if no information has been provided, the plant is **not introduced**.
+
+Let's rename this value to something more readable.
+
+```{r datacleaning}
+ont_spp <- select(ont_spp, -X1) # Remove imported row indices
+names(ont_spp) <- names(ont_spp) %>% tolower %>% sub(" ", "_", .) # clean up colnames
+
+# Rename NA data found in the introduced column
+ont_spp$introduced <- ont_spp$introduced %>% replace_na(., "Native") %>% recode("TRUE" = "Introduced")
+
+# Transform the data into long-format for visualization and filtering
+melted_ont_spp <- melt(ont_spp, id.vars = "taxon_name")
+```
+
+# Visualize the data
+
+## How many plants in Ontario are introduced?
+
+```{r countintroduced}
+introduced_subset <- subset(melted_ont_spp, variable == "introduced") %>% distinct # One record per species
+ggplot(data = introduced_subset, aes(x = value)) + 
+  geom_bar(fill = "sky blue", colour = "black") + 
+  # coord_flip() + 
+  labs(x = "Status", y = "Number of Taxa") + 
+  geom_text(stat="count", 
+            aes(label=round(..count../sum(..count..)*100, 2) %>% paste("Number: ", ..count.., " \nPercentage: ", ., "%", sep="")), 
+            position=position_dodge(width=0.9), vjust=1.25)
+  
+# TODO: Colour by taxon rank
+ 
+```
+
+From the above plot, I see that `r round((introduced_subset %>% dplyr::count(value) %>% mutate(freq = n/ sum(n)) %>% .$freq %>% .[1] )* 100, 2)`% of taxa found in Ontario described in the Flora of North America are introduced species.
+
+## How many plants in Ontario are weedy?
+
+Due to limitations in data capture, [special status (i.e., weedy, endemic status) is only available in in the following volumes: V3, V6, V9, V12, V17, V28](http://dev.floranorthamerica.org/Sample_Queries#Special_Status).
+
+I'd like to visualize what this means for my dataset in terms of data coverage.
+
+```{r datacompleteness}
+volume_subset <- subset(melted_ont_spp, variable == "volume") %>% distinct
+var_counts <- plyr::count(volume_subset$value)
+names(var_counts) <- c("volume", "freq")
+packing <- circleProgressiveLayout(var_counts$freq, sizetype='area')
+packing <- cbind(packing, rownames(packing))
+names(packing) <- c("x", "y", "radius", "id")
+
+colour <- data.frame("data_present" = rep("Yes", 6), "volume" = c("Volume 3", "Volume 6", "Volume 9", "Volume 12", "Volume 17", "Volume 28"))
+
+counts_data <- cbind(var_counts, packing)
+
+var_counts <- full_join(var_counts, colour, by = "volume")
+var_counts$data_present <- var_counts$data_present %>% as.character %>% replace_na("No")
+circle_colours <- var_counts %>% select(data_present) %>% cbind(., rownames(.))
+names(circle_colours) <- c("data_present", "id")
+
+dat_gg <- circleLayoutVertices(packing, npoints=50, idcol=4)
+dat_gg <- plyr::join(dat_gg, circle_colours, by = "id")
+
+ggplot() + 
+  geom_polygon(data = dat_gg, aes(x, y, group = id, fill=as.factor(data_present)), colour = "black", alpha = 0.6) +
+  # Add text in the center of each bubble + control its size
+  geom_text(data = counts_data, aes(x, y, size=freq, label = volume)) +
+  scale_size_continuous(range = c(1,4)) +
+  theme_void() + 
+  theme(legend.position="none") +
+  coord_equal()
+
+```
+
+Most of my data comes from volumes 23 and 24. Unfortunately, special status data is not available for these volumes. You can see the volumes in blue above that have special status data.
+
+In total, **special status data is only available for `r round(((ont_spp %>% filter(!is.na(special_status)) %>% distinct %>% nrow/ont_spp %>% distinct %>% nrow) * 100), 2)`% of the taxa in my dataset**.
+
+As a result, the conclusions of my work will be biased.
+
+```{r countspecialstatus}
+
+special_status_subset <- subset(melted_ont_spp, variable == "special_status")
+
+no_data <- special_status_subset[is.na(special_status_subset$value) == TRUE,] %>% cbind(., "no_data")
+names(no_data)[4] <- "data_present"
+data_present <- special_status_subset[!is.na(special_status_subset$value),] %>% cbind(., "data")
+names(data_present)[4] <- "data_present"
+special_status_data_presence <- rbind(no_data, data_present)
+
+ggplot(data = special_status_data_presence, aes(x = data_present)) + 
+  geom_bar(fill = "sky blue", colour = "black") + 
+  coord_flip() + 
+  labs(x = "Status", y = "Number of Taxa") + 
+  geom_text(stat="count", 
+            aes(label=round(..count../sum(..count..)*100, 2) %>% paste(., "%", sep="")), 
+            vjust=0.3) # position_dodge and vjust not working
+```
+
+## What is the breakdown of special status indicators in my data?
+
+Within the ~`r round((ont_spp %>% filter(!is.na(special_status)) %>% distinct %>% nrow/ont_spp %>% distinct %>% nrow) * 100, 0)`% of taxa with special status data, we see the breakdown of status below.
+
+```{r countweedy}
+special_status_subset <- special_status_subset %>% drop_na() %>% filter(., value != "Illustrated")
+
+ggplot(data = special_status_subset, aes(x = value)) + 
+  geom_bar(fill = "lightpink", colour = "black") + 
+  coord_flip() + 
+  labs(x = "Status", y = "Number of Taxa") + 
+  geom_text(stat="count", 
+            aes(label=round(..count../sum(..count..)*100, 2) %>% paste(., "%", sep="")), 
+            vjust=0.3) # position_dodge and vjust not working
+```
+
+It is more common to be introduced than to be weedy. Only a small fraction of taxa are considered to be of conservation concern.
+
+## What is the likelihood is that the plant is introduced, given it is weedy?
+
+I'd like to further investigate the relationship between weediness and introduction status.
+
+```{r conditionalprobability}
+
+cond_prob <- round(ont_spp %>%
+  summarize(weedy_prob = sum(special_status == "Weedy" & introduced == "Introduced", na.rm = TRUE)/sum(special_status == "Weedy", na.rm = TRUE)) * 100, 2)
+print(cond_prob)
+
+
+reg_prob <- round(ont_spp %>%
+  summarize(prob = sum(introduced == "Introduced", na.rm = TRUE)/sum(introduced == "Introduced" | introduced == "Native", na.rm = TRUE)) * 100, 2)
+print(reg_prob)
+
+```
+
+From the above, I see that **being weedy greatly increases the probability that a plant is an introduced species** (`r as.character(cond_prob)`% vs. `r as.character(reg_prob)`%). This makes sense given my understanding of what makes introduced species successful. 
+
+## What is the taxonomic make-up of these two groups (introduced and weedy)?
+
+Which families are the largest offenders in terms of introduced and weedy species? 
+
+```{r taxonomyintroduced}
+
+taxonomy_subset <- select(ont_spp, -special_status) %>% distinct
+family_introduced_counts <- taxonomy_subset %>% filter(introduced == "Introduced") %>% dplyr::count(taxon_family, sort = TRUE) %>% top_n(., 10)
+family_native_counts <- taxonomy_subset %>% filter(introduced == "Native") %>% dplyr::count(taxon_family)
+counts_to_plot <- inner_join(family_introduced_counts, family_native_counts, by = "taxon_family")
+names(counts_to_plot) <- c("taxon_family", "num_introduced", "num_native")
+counts_to_plot <- melt(counts_to_plot) %>% group_by(variable) %>% dplyr::arrange(desc(value), .by_group = TRUE)
+
+ggplot(data = counts_to_plot, aes(x = reorder(taxon_family, value), y = value, fill = variable)) + 
+  geom_bar(stat = "identity", position = position_stack(reverse = TRUE), colour="black") + 
+  coord_flip() + labs(x = "Taxon Family", y = "Number of Taxa") +
+  scale_fill_discrete(name = "Status", labels = c("Introduced", "Native"))
+
+
+```
+
+Although by numbers, **Asteraceae** contributes the most number of introduced species to the Flora of Ontario, **Caryophyllaceae** is almost entirely comprised of introduced species. Rosaceae and Brassicaceae also contribute greatly in terms of numbers to the introduced flora, with Brassiceae being a family most dominated by introduced taxa.
+
+```{r taxonomyweedy}
+
+taxonomy_subset_special_status <- ont_spp %>% filter(special_status != "Illustrated") %>% drop_na
+
+family_weedy_counts <- taxonomy_subset_special_status %>% filter(special_status == "Weedy") %>% dplyr::count(taxon_family, sort = TRUE) %>% top_n(., 10)
+family_non_weedy_counts <- taxonomy_subset_special_status %>% filter(special_status != "Weedy") %>% drop_na %>% dplyr::count(taxon_family)
+counts_to_plot <- inner_join(family_weedy_counts, family_non_weedy_counts, by = "taxon_family")
+names(counts_to_plot) <- c("taxon_family", "num_weedy", "num_non_weedy")
+counts_to_plot <- melt(counts_to_plot) %>% group_by(variable) %>% dplyr::arrange(desc(value), .by_group = TRUE)
+
+ggplot(data = counts_to_plot, aes(x = reorder(taxon_family, value), y = value, fill = variable)) + 
+  geom_bar(stat = "identity", position = position_stack(reverse = TRUE), colour="black") + 
+  coord_flip() + labs(x = "Taxon Family", y = "Number of Taxa") +
+  scale_fill_discrete(name = "Status", labels = c("Weedy", "Non-Weedy"))
+
+
+```
+
+The **Euphorbiaceae** family contains the most number of weedy species, in absolute terms and as a percentage of the totaly number of taxa in the group (total number: `r taxonomy_subset_special_status %>% filter(special_status == "Weedy" & taxon_family == "Euphorbiaceae") %>% nrow`, percentage of group: `r round(taxonomy_subset_special_status %>% filter(special_status == "Weedy" & taxon_family == "Euphorbiaceae") %>% nrow / (taxonomy_subset_special_status %>% filter(special_status != "Weedy" & taxon_family == "Euphorbiaceae") %>% nrow + taxonomy_subset_special_status %>% filter(special_status == "Weedy" & taxon_family == "Euphorbiaceae") %>% nrow) * 100, 2)`).
+
+# Interpret the data
+
+# Conclusion
