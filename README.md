@@ -32,7 +32,7 @@ You can optionally return **properties** of the taxa matching your condition:
 
 `?Distribution`
 
-Putting this all together using pipes, we would have a query like this:
+Putting this all together using pipes, we have a query like this:
 
 `[[Authority::Linnaeus]]|?Distribution`
 
@@ -161,7 +161,7 @@ http://beta.floranorthamerica.org/Special:CreateAccount
 * [mwclient](https://pypi.org/project/mwclient/)
 * [pandas](https://pypi.org/project/pandas/)
 
-#### 1. Use pip
+#### Option A. Use pip
 
 `requirements.txt` has been generated with `pip freeze > requirements.txt`
 
@@ -171,7 +171,7 @@ cd fna-query
 pip install -r requirements.txt
 ```
 
-#### 2. Use conda
+#### Option B. Use conda
 
 The project was built within a conda environment. A conda YAML file has been generated with `conda env export > fna-query.yml`.
 
@@ -222,7 +222,7 @@ https://github.com/jocelynpender/fna-query/tree/master/python/demo_queries
 
 ## Getting help
 
-Contact me at jocelyn.pender@canada.ca for support.
+Contact jocelyn.pender@canada.ca for support.
 
 ### Bug reports
 
