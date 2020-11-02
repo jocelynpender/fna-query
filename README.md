@@ -10,6 +10,7 @@ These scripts allow you to query the `http://beta.semanticfna.org/` [API module 
 
   * [Getting started](#getting-started)
     + [Prepare your query](#prepare-your-query)
+    + [Query size limitations] (#query-size-limitations)
   * [Use R](#use-r)
   * [Use Python](#use-python)
   * [Getting help](#getting-help)
@@ -41,11 +42,18 @@ Or with additional properties requested, like this:
 `[[Authority::Linnaeus]]|?Distribution|?Taxon family`
 
 Sample queries can be found here:
-* http://dev.floranorthamerica.org/Sample_Queries
+* http://beta.floranorthamerica.org/Sample_Queries
 
 Read more about Semantic MediaWiki query syntax:
 * https://www.semantic-mediawiki.org/wiki/Help:Semantic_search
 * https://www.semantic-mediawiki.org/wiki/Help:Search_operators
+
+### Query size limitations
+
+The Semantic MediaWiki limits API queries to 5,000 results. If you expect your query to return more than 5,000 results, you should run your query in batches.
+(N.B.: There are ~20,000 treatments in the FNA Online.)
+
+We recommend running your queries by volume by adding a volume condition to your query (e.g., "[[Volume::Volume 17]]").
 
 ## Use R
 
