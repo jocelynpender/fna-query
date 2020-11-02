@@ -10,7 +10,7 @@ These scripts allow you to query the `http://beta.semanticfna.org/` [API module 
 
   * [Getting started](#getting-started)
     + [Prepare your query](#prepare-your-query)
-    + [Query size limitations] (#query-size-limitations)
+    + [Query size limitations](#query-size-limitations)
   * [Use R](#use-r)
   * [Use Python](#use-python)
   * [Getting help](#getting-help)
@@ -50,10 +50,10 @@ Read more about Semantic MediaWiki query syntax:
 
 ### Query size limitations
 
-The Semantic MediaWiki limits API queries to 5,000 results. If you expect your query to return more than 5,000 results, you should run your query in batches.
+Semantic MediaWiki limits API queries to 5,000 results. If you expect your query to return more than 5,000 results, you should run your query in batches.
 (N.B.: There are ~20,000 treatments in the FNA Online.)
 
-We recommend running your queries by volume by adding a volume condition to your query (e.g., "[[Volume::Volume 17]]").
+We recommend running your queries by 'published volume' by adding a volume condition to your query (e.g., "[[Volume::Volume 17]]"). Please see [this page](http://beta.semanticfna.org/w/index.php?title=Special%3ASearchByProperty&property=Volume&value=) for a list of volumes that can be queried. 
 
 ## Use R
 
