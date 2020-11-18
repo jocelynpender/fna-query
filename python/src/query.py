@@ -1,7 +1,7 @@
 from mwclient import Site
 import pandas as pd
 import re
-import src.local  # create a file called local.py with your credentials
+import local  # create a file called local.py with your credentials
 
 
 def site_login():
@@ -10,7 +10,7 @@ def site_login():
     Create a file called local.py with your credentials
     """
     site = Site(('http', 'beta.floranorthamerica.org'))
-    site.login(src.local.USERNAME, src.local.PASSWORD)
+    site.login(local.USERNAME, local.PASSWORD)
     return site
 
 
@@ -95,3 +95,5 @@ def ask_query(query_string, output_file_name):
     properties_texts_data_frame = properties_texts_data_frame.rename(columns={0: "Taxon name"})
     properties_texts_data_frame.to_csv(output_file_name, index=False)
     return properties_texts_data_frame
+
+ask_query("[[Taxon name::×leydeum dutillyanum]]|?Illustrator", "out.txt")
