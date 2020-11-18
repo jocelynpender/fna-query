@@ -1,7 +1,7 @@
 from mwclient import Site
 import pandas as pd
 import re
-import local  # create a file called local.py with your credentials
+import src.local  # create a file called local.py with your credentials
 
 
 def site_login():
@@ -10,7 +10,7 @@ def site_login():
     Create a file called local.py with your credentials
     """
     site = Site(('http', 'beta.floranorthamerica.org'))
-    site.login(local.USERNAME, local.PASSWORD)
+    site.login(src.local.USERNAME, src.local.PASSWORD)
     return site
 
 
@@ -30,9 +30,16 @@ def extract_property_text(printouts, property):
     """
     property_text = printouts[property]
     if len(property_text) == 1:
-        property_text = property_text[0]
+        property_text = property_text[0] # property_text comes as a list, even with one value
         if isinstance(property_text, dict): # If the property is a page type, it returns a dictionary
             property_text = property_text['fulltext'] # with namespace, url, etc. 'fulltext' is what we want
+    # if property_text contains more than one value, it is useful to simply return it as a list!
+    if len(property_text) > 1 and isinstance(property_text[0], dict): # UNLESS property_text is a dictionary, in the
+        # case of page properties. In this case we need to extract the 'fulltext' property values and return them as a list,
+        # similar to string type properties TODO: return Series instead of list here
+        prop_value_list = list()
+        prop_value_list.append([prop_value['fulltext'] for prop_value in property_text]) #
+        property_text = prop_value_list[0]
     return property_text
 
 
@@ -95,5 +102,3 @@ def ask_query(query_string, output_file_name):
     properties_texts_data_frame = properties_texts_data_frame.rename(columns={0: "Taxon name"})
     properties_texts_data_frame.to_csv(output_file_name, index=False)
     return properties_texts_data_frame
-
-ask_query("[[Taxon name::×leydeum dutillyanum]]|?Illustrator", "out.txt")
