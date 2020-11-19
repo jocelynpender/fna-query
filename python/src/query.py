@@ -30,9 +30,16 @@ def extract_property_text(printouts, property):
     """
     property_text = printouts[property]
     if len(property_text) == 1:
-        property_text = property_text[0]
+        property_text = property_text[0] # property_text comes as a list, even with one value
         if isinstance(property_text, dict): # If the property is a page type, it returns a dictionary
             property_text = property_text['fulltext'] # with namespace, url, etc. 'fulltext' is what we want
+    # if property_text contains more than one value, it is useful to simply return it as a list!
+    if len(property_text) > 1 and isinstance(property_text[0], dict): # UNLESS property_text is a dictionary, in the
+        # case of page properties. In this case we need to extract the 'fulltext' property values and return them as a list,
+        # similar to string type properties TODO: return Series instead of list here
+        prop_value_list = list()
+        prop_value_list.append([prop_value['fulltext'] for prop_value in property_text]) #
+        property_text = prop_value_list[0]
     return property_text
 
 
