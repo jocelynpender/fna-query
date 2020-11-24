@@ -6,3 +6,6 @@ packrat/lib*/
 packrat/src/
 local.py
 __pycache__
+.Rproj.user
+venv/
+.idea/
