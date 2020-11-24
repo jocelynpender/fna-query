@@ -6,9 +6,6 @@ cffi==1.13.2
 chardet==3.0.4
 cryptography==2.8
 idna==2.8
-mkl-fft==1.0.15
-mkl-random==1.1.0
-mkl-service==2.3.0
 mwclient==0.10.0
 numpy==1.18.1
 oauthlib==3.1.0
