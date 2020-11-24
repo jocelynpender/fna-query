@@ -210,14 +210,14 @@ If your query results are extensive, the query will take some time to process. P
 #### Option A: Taxa names only (i.e., query does not include ? parameter)
 E.g., `[[Illustrator::+]][[Illustration::Present]]`
 
-`python -m src.run_query --output_file_name "illustrated_taxa.csv" --query_string "[[Illustrator::+]][[Illustration::Present]]"`
+`python -m src.run_query --output_file_name "illustrated_taxa.csv" --query_string "[[Illustrator::+]][[Illustration::Present]][[Taxon family::Asteraceae]]"`
 
 See https://github.com/jocelynpender/fna-query/blob/master/python/demo_queries/distribution/nunavut_taxa.csv for a sample output file.
 
 #### Option B: Taxa names and properties (i.e., query includes a ? parameter)
-E.g., `[[Illustrator::+]][[Illustration::Present]]|?Taxon family`
+E.g., `[[Illustrator::+]][[Illustration::Present]]|?Taxon rank`
 
-`python -m src.run_query --output_file_name "illustrated_taxa_taxon_family.csv" --query_string "[[Illustrator::+]][[Illustration::Present]]|?Taxon family"`
+`python -m src.run_query --output_file_name "illustrated_taxa_taxon_family.csv" --query_string "[[Illustrator::+]][[Illustration::Present]][[Taxon family::Asteraceae]]|?Taxon rank"`
 
 See https://github.com/jocelynpender/fna-query/blob/master/python/demo_queries/distribution/nunavut_taxa_family_name.csv for a sample output file.
 
