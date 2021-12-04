@@ -230,7 +230,7 @@ https://github.com/jocelynpender/fna-query/tree/master/python/demo_queries
 
 ## Getting help
 
-Contact jocelyn.pender@canada.ca for support.
+Contact pender.jocelyn@gmail.com or joel.sachs@canada.ca for support.
 
 ### Bug reports
 
